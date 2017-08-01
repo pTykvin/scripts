@@ -1,0 +1,117 @@
+#!/bin/bash
+
+YL='\033[1;33m'
+OR='\033[0;31m' 
+NC='\033[0m'
+
+sudo echo
+#set -x
+#set -v
+cleanup() {
+  echo -e "${NC}\n"
+  killall ssh
+}
+trap cleanup 0
+
+error() {
+  local parent_lineno="$1"
+  local message="$2"
+  local code="${3:-1}"
+  if [[ -n "$message" ]] ; then
+    echo "Error on or near line ${parent_lineno}: ${message}; exiting with status ${code}"
+  else
+    echo "Error on or near line ${parent_lineno}; exiting with status ${code}"
+  fi
+  exit "${code}"
+}
+trap 'error ${LINENO}' ERR
+
+
+tunnel_host=hub-beta.dreamkas.ru
+case $1 in
+  2|hub1 ) # hub-prod-1
+      name=hub-prod-1
+      host=hub1.local
+      tunnel=17
+      ;;
+  3|hub2 ) # hub-prod-2
+      name=hub-prod-2
+      host=hub2.local
+      tunnel=15
+      ;;
+  4|tw ) # hub-prod-workers
+      name=hub-prod-workers
+      host=workers.local
+      tunnel=14
+      ;;
+  7|twb ) # hub-beta-workers
+      name=hub-beta-workers
+      host=workers-beta.local
+      tunnel=09
+      ;;
+  1|hub ) # hub-prod-db
+      name=hub-prod-db
+      host=hub.dreamkas.ru
+      ;;
+  6|hubb ) # hub-beta
+      name=hub-beta
+      host=hub-beta.dreamkas.ru
+      ;;
+  8|updateo ) # update-old
+      name=update-old
+      host=95.213.229.219
+      ;;
+  5|update ) # update
+      name=update
+      host=update.dreamkas.ru
+      ;;
+  9|ci ) # start-ci
+      name=start-ci
+      host=start-ci.dreamkas.ru
+      ;;
+  10|updateb ) # update-beta
+      name=update-beta
+      host=update-beta.dreamkas.ru
+      ;;
+  11|test ) # hub-test
+      name=hub-test
+      host=92.53.101.182
+      ;;
+  *  )
+      echo -e "\n${YL}Correct destinations:"
+      echo -e "${OR}  1|hub           ${YL}for hub-prod-db"
+      echo -e "${OR}  2|hub1          ${YL}for hub-prod-1"
+      echo -e "${OR}  3|hub2          ${YL}for hub-prod-2"
+      echo -e "${OR}  4|tw            ${YL}for hub-prod-workers"
+      echo -e "${OR}  5|update        ${YL}for update"
+      echo -e "${OR}  6|hubb          ${YL}for hub-beta"
+      echo -e "${OR}  7|twb           ${YL}for hub-beta-workers"
+      echo -e "${OR}  8|updateo       ${YL}for update-old"
+      echo -e "${OR}  9|ci            ${YL}for start-ci"
+      echo -e "${OR}  10|updateb      ${YL}for update-beta"
+      echo -e "${OR}  11|test         ${YL}for hub-test"
+      exit 0
+;;
+esac
+
+function open {
+  tunnel_port=90$tunnel
+  ip=192.168.0.$tunnel
+  ssh -oStrictHostKeyChecking=no -f -N -L $tunnel_port:$ip:22 root@$tunnel_host & pid=$!
+  sleep 2 # TODO: Заменить на ожидпние порта через netstat или типа того
+  echo "Tunnel to $name successfully builded. Local port: $tunnel_port"
+}
+
+if [ ! -z $tunnel ]
+  then
+    open
+    port=90$tunnel
+    host=localhost
+  else
+     port=22
+fi
+echo -e "${OR}"
+echo -e "Connecting to $name..." | tr '[:lower:]' '[:upper:]'
+echo -e "${YL}"
+
+ssh -oStrictHostKeyChecking=no root@$host -p $port

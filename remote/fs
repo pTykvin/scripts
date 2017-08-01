@@ -1,0 +1,22 @@
+#!/bin/bash
+
+YL='\033[1;33m'
+OR='\033[0;31m' 
+NC='\033[0m' # No Color
+
+set -e
+
+function error {
+  echo $1
+  exit 0;
+}
+
+[ -z $1 ] && error "Host required"
+[ -z $2 ] && error "Mount dir required"
+
+DIR=/mnt/$2
+
+sudo mkdir -p $DIR
+sudo sshfs -oallow_other -oIdentityFile=/home/pavel/.ssh/id_rsa -oreconnect -oStrictHostKeyChecking=no -oServerAliveInterval=15 root@$1:/ $DIR -p 22 -C
+echo -e "\n${YL}Remote filesystem of ${OR}$1${YL} mounted to ${OR}$DIR${NC}\n"
+echo $DIR | xclip

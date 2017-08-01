@@ -1,0 +1,24 @@
+#!/bin/bash
+
+YL='\033[1;33m'
+OR='\033[0;31m' 
+NC='\033[0m' # No Color
+
+set -e
+
+if [ -z $1 ]
+  then
+    echo "File name required"
+    exit 0
+fi
+
+FILE=`readlink -f $1`
+LINK=$2
+if [ -z $LINK ]
+  then
+    LINK=$1
+fi
+
+sudo chmod +x $FILE
+sudo ln -sf $FILE /usr/local/bin/$2
+echo -e "\n${YL}Link for file ${OR}${FILE}${YL} created and access by command ${OR}${LINK}${NC}\n"

@@ -1,11 +1,15 @@
 #!/bin/bash
 
-sudo echo
-
 NC="\e[0m"
 GR="\e[32m"
 
-file=$1
+if [ -f $1 ]; then
+  file=$1
+  sudo echo
+else
+  echo "Wrong file $1"
+  exit 1
+fi
 
 function Initialization() {
   set -e
@@ -99,4 +103,3 @@ function main {
 }
 
 [ $1 == 'clean' ] && { Evaluator CleanUp; exit 0; }|| main
-

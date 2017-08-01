@@ -9,7 +9,7 @@ sudo echo
 #set -v
 cleanup() {
   echo -e "${NC}\n"
-  killall ssh
+  #killall ssh
 }
 trap cleanup 0
 
@@ -77,6 +77,10 @@ case $1 in
       name=hub-test
       host=92.53.101.182
       ;;
+  12|1s ) # hub-test
+      name=1s
+      host=1s
+      ;;
   *  )
       echo -e "\n${YL}Correct destinations:"
       echo -e "${OR}  1|hub           ${YL}for hub-prod-db"
@@ -90,6 +94,7 @@ case $1 in
       echo -e "${OR}  9|ci            ${YL}for start-ci"
       echo -e "${OR}  10|updateb      ${YL}for update-beta"
       echo -e "${OR}  11|test         ${YL}for hub-test"
+      echo -e "${OR}  12|1s           ${YL}for 1s"
       exit 0
 ;;
 esac

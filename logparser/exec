@@ -7,7 +7,7 @@ if [ -f $1 ]; then
   file=$1
   sudo echo
 else
-  echo "Wrong file $1"
+  echo "Wrong file: $1"
   exit 1
 fi
 
@@ -44,18 +44,20 @@ function Extract() {
 
 function PrintLine() {
   printf "| %-24s|%51s |\n"  "$1" "$2"
+  echo $1=$2 >> $workdir/info
 }
 
 
 function output() {
-
-  
+  rm -rf $workdir/info
   printf "\n%80s\n" | tr " " "="
   PrintLine Home "$workdir"
   PrintLine Version "$version"
   PrintLine UUID "$uuid"
   PrintLine Model "$model"
   printf "%80s\n\n" | tr " " "="
+
+  echo $workdir | xclip 2>/dev/null
 
 }
 

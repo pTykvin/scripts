@@ -1,0 +1,233 @@
+#!/bin/bash
+
+NC="\e[0m"
+GR="\e[32m"
+YL="\e[1;33m"
+OR="\e[0;31m"
+
+if [ -f $1 ]; then
+  file=$1
+  sudo echo
+else
+  echo "Wrong file: $1"
+  exit 1
+fi
+
+suffix=cslog
+scriptdir=`dirname $(realpath $0)`
+
+
+function Clean_Up() {
+  
+  rm -rf /tmp/tmp.*$suffix
+  return $?
+
+}
+
+function mime() {
+
+  echo `file $file -z --mime-type | sed 's/.* //'`
+
+}
+
+function Extract() {
+  workdir=`mktemp -d --suffix=$suffix`
+  local mime=`mime`
+  case $mime in
+    application/x-tar ) # Extract .cslog
+      tar -xf $file -C $workdir  
+    ;;
+    * )
+      echo "Unsupported file type $mime"
+      return 1
+    ;;
+  esac
+  return 0
+}
+
+function PrintLine() {
+  local key=$1
+  local value=`echo -e $2 | tr -d [:space:]`
+  printf "| %-24s|%51s |\n"  "$key" "$value"
+  echo $1=$2 >> $workdir/info
+}
+
+
+function Output() {
+  rm -rf $workdir/info
+  printf "\n%80s\n" | tr " " "="
+  PrintLine Home "$workdir"
+  PrintLine Version "$version"
+  PrintLine UUID "$uuid"
+  PrintLine Model "$model"
+  printf "%80s\n\n" | tr " " "="
+
+  echo -n $workdir | xclip 2>/dev/null
+
+}
+
+function Extract_Version() {
+  
+  [ ! $old ] && version=`cat $workdir/version` || version=`cat $workdir/config/register-modules.xml | grep productVersion | sed -n 's/.*productVersion="\([^"]*\).*/\1/p'`
+
+}
+
+function Extract_UUID() {
+  
+  uuid=`cat $workdir/licenses/license.properties | grep uuid | sed 's/uuid = //'`
+  return 0
+}
+
+function Extract_Model() {
+  local modelfile=$workdir/device_info.properties
+  if [ -f $modelfile ]; then
+    model=`cat $workdir/device_info.properties | grep model | sed 's/model=//'`
+    return 0
+  else
+    model='UNKNOWN'
+    return 1
+  fi
+}
+
+function Check_Structure() {
+  
+  [ -f $workdir/version ] && old=false || old=true
+
+}
+
+function Pg() {
+
+  Evaluator Start_Postgres
+  Evaluator Extract_Postgres_Port
+  Evaluator Create_Databases
+  Evaluator Restore_Data
+
+  echo -e "\n\n${Yl}Cash databases establishing on port $pg_port${NC}\n\n"
+
+  #Connect
+
+}
+
+function Start_Postgres() {
+
+  cd $scriptdir
+  sudo docker-compose -f $scriptdir/docker-compose.yml -p $suffix up -d --force-recreate --remove-orphans 2>/dev/null
+  return $?
+
+}
+
+function Extract_Postgres_Port() {
+
+  pg_port=`sudo docker-compose -f $scriptdir/docker-compose.yml -p $suffix ps | grep cslog_postgres_1 | sed -n 's/.*:\([0-9]*\).*/\1/p'`
+  return $?
+
+}
+
+function Create_Databases() {
+  
+  for db in `ls -1 $workdir/db/ | tr "." " " | awk '{ print $1 }'`; do
+    psql -U postgres -h localhost -p $pg_port -c "DROP DATABASE IF EXISTS \"$db\";" >/dev/null 2>&1
+    psql -U postgres -h localhost -p $pg_port -c "CREATE DATABASE \"$db\";" >/dev/null 2>&1
+  done
+
+}
+
+function Restore_Data() {
+
+  for file in `ls -1 $workdir/db/`; do
+    db=`echo $file | tr "." " " | awk '{ print $1 }'`
+    pg_restore -h localhost -p $pg_port -U postgres -C -d $db $workdir/db/$file
+  done
+
+}
+
+function Connect() {
+  
+  echo -en "\n${YL}Connect to db? [y/n]: ${NC}"  
+  read -n 1 result
+  case $result in
+    y ) 
+      i=0
+      for db in `ls -1 $workdir/db/ | tr "." " " | awk '{ print $1 }'`; do
+        $((i++))
+        echo "$i: $db"
+        dbs[$i]=$db
+      done      
+      echo -en "\n${YL}Select database: ${NC}"
+      read -n 1 result
+      psql -U postgres -d 
+      ;;
+    n )
+      Pg
+      ;;
+    * )
+      Connect
+      ;;
+  esac
+
+}
+
+function Selection() {
+
+  echo -e "${YL}1${NC}: Restore cash database"
+  echo -e "${YL}2${NC}: Analize logs with ELK"
+  echo -e "${YL}3${NC}: I want everything"
+  echo -e "\n${YL}0${NC}: Exit"
+  
+  Do
+
+}
+
+function Do() {
+  echo -en "\n${YL}What do you want?: ${NC}"
+  read -n 1 result 
+  echo
+  case $result in
+    0 ) 
+      echo "Good bye"
+      exit 0
+      ;;
+    1 )
+      Pg
+      ;;
+    2 )
+      ;;
+    3 )
+      ;;
+    * )
+      Do
+      ;;
+  esac
+}
+
+function Evaluator() {
+  printf "%-76s" $1 | tr " " "." | tr "_" " "
+  eval $1
+  case $? in
+    0 )
+      echo -e "..${GR}OK${NC}"
+      ;;
+    1 )
+      echo -e "${YL}WARN${NC}"
+      ;;
+    * )
+      echo -e ".${OR}ERR${NC}"
+      exit $?
+      ;;
+  esac
+}
+
+function main {
+
+  Evaluator Clean_Up
+  Evaluator Extract
+  Evaluator Check_Structure
+  Evaluator Extract_Version
+  Evaluator Extract_UUID
+  Evaluator Extract_Model
+  Output
+  Selection
+
+}
+
+[ $1 == 'clean' ] && { Evaluator CleanUp; exit 0; }|| main

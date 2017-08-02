@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+#    volumes:
+#      - "./mnt/pg/:/var/lib/postgresql/data"

@@ -7,7 +7,7 @@ function Pg() {
 
   Evaluator Search_Dumps
 
-  if [[ ${DB[@]} != 0 ]]; then
+  if [[ ! -z $DB ]]; then
 
     Evaluator Start_Postgres
     Evaluator Extract_Postgres_Port

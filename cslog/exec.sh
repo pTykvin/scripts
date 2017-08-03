@@ -1,5 +1,5 @@
 #!/bin/bash
-src="`pwd`/$1"
+pwd=`pwd`
 cd `dirname $(realpath $0)`
 
 source initializer.sh
@@ -11,7 +11,7 @@ source worker.sh
 
 function _() {
 
-  InitFile $src
+  InitFile $1 $pwd
   Evaluator Unpack
   Analize
   PrintCommonsInfo
@@ -20,4 +20,4 @@ function _() {
 
 }
 
-_
+_ $1

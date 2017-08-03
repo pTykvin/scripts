@@ -27,12 +27,14 @@ function PrintPostgresInfo() {
     db=`echo $db | awk -F: '{ print $1 }'`
     PrintLine $db "${dump} (${size})"
   done
-  printf "\n%80s\n" | tr " " "="
+  printf "%80s\n" | tr " " "="
 
 }
 
 function PrintLine() {
-  local key=$1
-  local value=`echo -e $2 | tr -d [:space:]`
-  printf "| %-24s|%51s |\n"  "$key" "$value"
+  if [[ ! -z `echo $1 | tr -d [:space:]` ]]; then
+    local key=$1
+    local value=`echo -e $2 | tr -d [:space:]`
+    printf "| %-24s|%51s |\n"  "$key" "$value"
+  fi
 }

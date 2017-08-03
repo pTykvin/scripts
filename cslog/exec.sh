@@ -9,9 +9,11 @@ source printer.sh
 source analizer.sh
 source worker.sh
 
+cd $pwd
+
 function _() {
 
-  InitFile $1 $pwd
+  InitFile $1
   Evaluator Unpack
   Analize
   PrintCommonsInfo

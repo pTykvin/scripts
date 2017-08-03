@@ -3,8 +3,6 @@
 source unset.sh
 
 function InitFile() {
-  local pwd=`pwd`
-  cd $2
   if [ -f $1 ]; then
     sudo echo
 
@@ -13,7 +11,7 @@ function InitFile() {
     ## Consts
 
     SUFFIX=cslog
-    SCRIPTDIR=$pwd
+    SCRIPTDIR=`dirname $(realpath $0)`
     CLEAR="\e[0m"
     GREEN="\e[32m"
     YELLOW="\e[1;33m"
@@ -32,10 +30,9 @@ function InitFile() {
     ##
 
     rm -rf /tmp/tmp.*$SUFFIX}
-    export SOURCE=$2/$1
+    export SOURCE=$1
   else
     echo "Wrong file: $1"
     exit 1
   fi
-  cd $pwd
 }

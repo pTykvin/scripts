@@ -111,7 +111,7 @@ function Pg() {
 function Start_Postgres() {
 
   cd $scriptdir
-  sudo docker-compose -f $scriptdir/docker-compose.yml -p $suffix up -d --force-recreate --remove-orphans 2>/dev/null
+  sudo docker-compose -f $scriptdir/docker-compose.yml -p $suffix up -d --force-recreate --remove-orphans >/dev/null 2>&1
   return $?
 
 }

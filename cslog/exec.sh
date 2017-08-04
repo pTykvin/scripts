@@ -17,7 +17,7 @@ function _() {
   Evaluator Unpack
   Analize
   PrintCommonsInfo
-  Work
+  AfterAnalize
   Unset
 
 }

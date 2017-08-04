@@ -48,7 +48,7 @@ function Start_Postgres() {
 
 function Extract_Postgres_Port() {
 
-  export PG_PORT=`sudo docker-compose -f $SCRIPTDIR/docker-compose.yml -p $SUFFIX ps | grep cslog_postgres_1 | sed -n 's/.*:\([0-9]*\).*/\1/p'`
+  export PGPORT=`sudo docker-compose -f $SCRIPTDIR/docker-compose.yml -p $SUFFIX ps | grep cslog_postgres_1 | sed -n 's/.*:\([0-9]*\).*/\1/p'`
   return $?
 
 }
@@ -56,8 +56,8 @@ function Extract_Postgres_Port() {
 function Create_Databases() {
   for db in $DB ; do
     db=`echo $db | awk -F: '{ print $1 }'`
-    psql -U postgres -h localhost -p $PG_PORT -c "DROP DATABASE IF EXISTS \"$db\";" >/dev/null 2>&1
-    psql -U postgres -h localhost -p $PG_PORT -c "CREATE DATABASE \"$db\";" >/dev/null 2>&1
+    psql -U postgres -h localhost -p $PGPORT -c "DROP DATABASE IF EXISTS \"$db\";" >/dev/null 2>&1
+    psql -U postgres -h localhost -p $PGPORT -c "CREATE DATABASE \"$db\";" >/dev/null 2>&1
   done
 }
 
@@ -65,9 +65,9 @@ function Restore_Data() {
   for db in $DB ; do
     dump=`echo $db | awk -F: '{ print $2 }'`
     db=`echo $db | awk -F: '{ print $1 }'`
-    pg_restore -h localhost -p $PG_PORT -U postgres -C -d $db $WORKDIR/db/$dump
+    pg_restore -h localhost -p $PGPORT -U postgres -C -d $db $WORKDIR/db/$dump >/dev/null 2>&1
   done
-
+  return 0
 }
 
 function Connect() {

@@ -23,13 +23,17 @@ function Extract_Version() {
   else
     version=`cat $WORKDIR/config/register-modules.xml | grep productVersion | sed -n 's/.*productVersion="\([^"]*\).*/\1/p'`
   fi
-
+  if [[ -z $version ]]; then
+    return 100
+  fi
 }
 
 function Extract_UUID() {
-
-  uuid=`cat $WORKDIR/licenses/license.properties | grep uuid | sed 's/uuid = //'`
-  return 0
+  if [[ -f $WORKDIR/licenses/license.properties ]]; then
+    uuid=`cat $WORKDIR/licenses/license.properties | grep uuid | sed 's/uuid = //'`
+    return 0
+  fi
+  return 100
 }
 
 function Extract_Model() {
@@ -39,6 +43,6 @@ function Extract_Model() {
     return 0
   else
     model='UNKNOWN'
-    return 1
+    return 100
   fi
 }

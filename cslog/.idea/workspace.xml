@@ -32,11 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="printer.sh" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/printer.sh">
+      <file leaf-file-name="selector.sh" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/selector.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="29" column="10" lean-forward="false" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+            <state relative-caret-position="198">
+              <caret line="11" column="43" lean-forward="true" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -64,16 +64,17 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/evaluator.sh" />
         <option value="$PROJECT_DIR$/unset.sh" />
-        <option value="$PROJECT_DIR$/worker.sh" />
-        <option value="$PROJECT_DIR$/unpacker.sh" />
         <option value="$PROJECT_DIR$/test" />
-        <option value="$PROJECT_DIR$/analizer.sh" />
-        <option value="$PROJECT_DIR$/postgres.sh" />
-        <option value="$PROJECT_DIR$/initializer.sh" />
-        <option value="$PROJECT_DIR$/exec.sh" />
         <option value="$PROJECT_DIR$/printer.sh" />
+        <option value="$PROJECT_DIR$/unpacker.sh" />
+        <option value="$PROJECT_DIR$/initializer.sh" />
+        <option value="$PROJECT_DIR$/evaluator.sh" />
+        <option value="$PROJECT_DIR$/analizer.sh" />
+        <option value="$PROJECT_DIR$/exec.sh" />
+        <option value="$PROJECT_DIR$/postgres.sh" />
+        <option value="$PROJECT_DIR$/worker.sh" />
+        <option value="$PROJECT_DIR$/selector.sh" />
       </list>
     </option>
   </component>
@@ -104,6 +105,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -115,10 +120,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,15 +241,17 @@
       <option name="presentableId" value="Default" />
       <updated>1501774604503</updated>
       <workItem from="1501774605679" duration="40000" />
-      <workItem from="1501774656336" duration="7532000" />
+      <workItem from="1501774656336" duration="8505000" />
+      <workItem from="1501848082649" duration="1595000" />
+      <workItem from="1501850027453" duration="5838000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7572000" />
+    <option name="totallyTimeSpent" value="15978000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1779" y="24" width="1857" height="1092" extended-state="6" />
+    <frame x="1779" y="24" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -263,7 +266,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25262576" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25815368" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3291536" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -291,26 +294,30 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/evaluator.sh">
+    <entry file="file://$PROJECT_DIR$/analizer.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="36" lean-forward="true" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
-          <folding>
-            <marker date="1501775243011" expanded="true" signature="146:195" ph="{...}" />
-            <marker date="1501775243011" expanded="true" signature="200:250" ph="{...}" />
-            <marker date="1501775243011" expanded="true" signature="255:319" ph="{...}" />
-          </folding>
+        <state relative-caret-position="522">
+          <caret line="29" column="56" lean-forward="true" selection-start-line="29" selection-start-column="56" selection-end-line="29" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/exec.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="1" lean-forward="true" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/evaluator.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="9" lean-forward="false" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+        <state relative-caret-position="126">
+          <caret line="7" column="36" lean-forward="true" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
           <folding>
-            <marker date="1501775243011" expanded="true" signature="146:195" ph="{...}" />
-            <marker date="1501775243011" expanded="true" signature="200:250" ph="{...}" />
-            <marker date="1501775243011" expanded="true" signature="255:319" ph="{...}" />
+            <marker date="1501852707000" expanded="true" signature="146:195" ph="{...}" />
+            <marker date="1501852707000" expanded="true" signature="200:252" ph="{...}" />
+            <marker date="1501852707000" expanded="true" signature="257:321" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -319,107 +326,102 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1501689691661" expanded="true" signature="9:14" ph="3.3" />
-            <marker date="1501689691661" expanded="true" signature="15:152" ph="services: &lt;1 key&gt;" />
-            <marker date="1501689691661" expanded="true" signature="27:152" ph="postgres: &lt;4 keys&gt;" />
-            <marker date="1501689691661" expanded="true" signature="48:56" ph="postgres" />
-            <marker date="1501689691661" expanded="true" signature="61:80" ph="ports: &lt;1 item&gt;" />
-            <marker date="1501689691661" expanded="true" signature="76:80" ph="5432" />
-            <marker date="1501689691661" expanded="true" signature="85:132" ph="environment: &lt;1 item&gt;" />
-            <marker date="1501689691661" expanded="true" signature="106:132" ph="POSTGRES_…D=postgres" />
-            <marker date="1501689691661" expanded="true" signature="146:152" ph="always" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/worker.sh">
+    <entry file="file://$PROJECT_DIR$/test" />
+    <entry file="file://$PROJECT_DIR$/exec.origin" />
+    <entry file="file://$PROJECT_DIR$/printer.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="34" column="53" lean-forward="true" selection-start-line="34" selection-start-column="53" selection-end-line="34" selection-end-column="53" />
-          <folding>
-            <marker date="1501777618930" expanded="true" signature="209:256" ph="{...}" />
-            <marker date="1501777618930" expanded="true" signature="261:282" ph="{...}" />
-            <marker date="1501777618930" expanded="true" signature="321:342" ph="{...}" />
-          </folding>
+        <state relative-caret-position="306">
+          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/unset.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="1" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unpacker.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding>
-            <marker date="1501778075460" expanded="true" signature="226:325" ph="{...}" />
-            <marker date="1501778075460" expanded="true" signature="330:396" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="2" lean-forward="true" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/exec.origin">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analizer.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
+        <state relative-caret-position="36">
+          <caret line="2" column="9" lean-forward="false" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/initializer.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="9" lean-forward="false" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+        <state relative-caret-position="648">
+          <caret line="36" column="4" lean-forward="true" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluator.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+          <folding>
+            <marker date="1501852707000" expanded="true" signature="146:195" ph="{...}" />
+            <marker date="1501852707000" expanded="true" signature="200:252" ph="{...}" />
+            <marker date="1501852707000" expanded="true" signature="257:321" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analizer.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="26" column="14" lean-forward="false" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/unpacker.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="39" column="0" lean-forward="true" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding>
+            <marker date="1501848499274" expanded="true" signature="223:321" ph="{...}" />
+            <marker date="1501848499274" expanded="true" signature="326:599" ph="{...}" />
+            <marker date="1501848499274" expanded="true" signature="604:671" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/exec.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="4" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+        <state relative-caret-position="342">
+          <caret line="19" column="14" lean-forward="false" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/postgres.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="28" column="25" lean-forward="false" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+        <state relative-caret-position="90">
+          <caret line="5" column="9" lean-forward="false" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
           <folding>
-            <marker date="1501781791946" expanded="true" signature="1694:1965" ph="{...}" />
-            <marker date="1501781791946" expanded="true" signature="1970:1991" ph="{...}" />
-            <marker date="1501781791946" expanded="true" signature="1996:2022" ph="{...}" />
+            <marker date="1501852992165" expanded="true" signature="1716:1987" ph="{...}" />
+            <marker date="1501852992165" expanded="true" signature="1992:2013" ph="{...}" />
+            <marker date="1501852992165" expanded="true" signature="2018:2044" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/printer.sh">
+    <entry file="file://$PROJECT_DIR$/worker.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="29" column="10" lean-forward="false" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+        <state relative-caret-position="414">
+          <caret line="23" column="25" lean-forward="false" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+          <folding>
+            <marker date="1501857670643" expanded="true" signature="330:389" ph="{...}" />
+            <marker date="1501857670643" expanded="true" signature="446:487" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/selector.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="43" lean-forward="true" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
           <folding />
         </state>
       </provider>

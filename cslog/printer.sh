@@ -18,7 +18,7 @@ function PrintCommonsInfo() {
 
 function PrintPostgresInfo() {
 
-  echo -ne "${YELLOW}Postgres is available on port $ORANGE$PG_PORT\n${YELLOW}Restored databases: $CLEAR\n"
+  echo -ne "\n${YELLOW}Postgres is available on port $ORANGE$PGPORT\n${YELLOW}Restored databases: $CLEAR\n"
 
   printf "\n%80s\n" | tr " " "="
   for db in $DB ; do

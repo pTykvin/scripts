@@ -25,11 +25,11 @@ function InitFile() {
     UUID=
     MODEL=
     DB=
-    PG_PORT=
+    PGPORT=
 
     ##
 
-    rm -rf /tmp/tmp.*$SUFFIX}
+    rm -rf /tmp/tmp.*$SUFFIX
     export SOURCE=$1
   else
     echo "Wrong file: $1"

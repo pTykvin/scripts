@@ -9,7 +9,7 @@ function Evaluator() {
     0 )
       echo -e "..${GREEN}OK${CLEAR}"
       ;;
-    1 )
+    100 )
       echo -e "${YELLOW}WARN${CLEAR}"
       ;;
     * )

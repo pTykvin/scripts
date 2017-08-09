@@ -23,12 +23,12 @@ function WhaitSelection() {
   echo
   re="^[0-$#]+$"
   if ! [[ $result =~ $re ]] ; then
-    WhaitSelection
+    WhaitSelection "$@"
   elif [[ $result == 0 ]]; then
-    echo "Good bye"
-    exit 0
+    Exit
   else
     echo -en "\n${YELLOW}\"${!result}\"${CLEAR} was selected\n\n"
     return $result
   fi
 }
+

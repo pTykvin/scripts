@@ -6,7 +6,10 @@ source selector.sh
 
 function AfterAnalize() {
 
-  Select "Restore cash database" "Analize logs with ELK" "I want everything"
+  Select \
+    "Restore cash database" \
+    "Analize logs with ELK" \
+    "I want everything"
   DoAfterAnalize $?
 
 }
@@ -21,7 +24,7 @@ function DoAfterPostgres() {
 
   case $1 in
     1 )
-      psql -U postgres -p $PGPORT -h localhost
+      Connect
       ;;
   esac
 
@@ -31,7 +34,7 @@ function DoAfterAnalize() {
   case $1 in
     1 )
       Pg
-      AfterPostgres
+      [ $? == $OK ] && AfterPostgres || AfterAnalize
       ;;
     2 )
       ;;

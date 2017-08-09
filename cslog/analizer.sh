@@ -24,25 +24,25 @@ function Extract_Version() {
     version=`cat $WORKDIR/config/register-modules.xml | grep productVersion | sed -n 's/.*productVersion="\([^"]*\).*/\1/p'`
   fi
   if [[ -z $version ]]; then
-    return 100
+    return $WARN
   fi
 }
 
 function Extract_UUID() {
   if [[ -f $WORKDIR/licenses/license.properties ]]; then
     uuid=`cat $WORKDIR/licenses/license.properties | grep uuid | sed 's/uuid = //'`
-    return 0
+    return $OK
   fi
-  return 100
+  return $WARN
 }
 
 function Extract_Model() {
   local modelfile=$WORKDIR/device_info.properties
   if [ -f $modelfile ]; then
     model=`cat $WORKDIR/device_info.properties | grep model | sed 's/model=//'`
-    return 0
+    return $OK
   else
     model='UNKNOWN'
-    return 100
+    return $WARN
   fi
 }

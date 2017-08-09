@@ -2,12 +2,13 @@
 
 source evaluator.sh
 source printer.sh
+source selector.sh
 
 function Pg() {
 
   Evaluator Search_Dumps
 
-  if [[ ! -z $DB ]]; then
+  if [ $? == $OK ]; then
 
     Evaluator Start_Postgres
     Evaluator Extract_Postgres_Port
@@ -18,8 +19,8 @@ function Pg() {
 
   else
 
-    echo "Can't find database dumps"
-    return 1
+    echo "Database dumps not found"
+    return $WARN
 
   fi
 
@@ -36,6 +37,7 @@ function Search_Dumps() {
     fi
   done
   export DB=${dumps[@]}
+  [ ! -z $DB ] && return $OK || return $WARN
 }
 
 function Start_Postgres() {
@@ -55,43 +57,42 @@ function Extract_Postgres_Port() {
 
 function Create_Databases() {
   for db in $DB ; do
-    db=`echo $db | awk -F: '{ print $1 }'`
-    psql -U postgres -h localhost -p $PGPORT -c "DROP DATABASE IF EXISTS \"$db\";" >/dev/null 2>&1
-    psql -U postgres -h localhost -p $PGPORT -c "CREATE DATABASE \"$db\";" >/dev/null 2>&1
+    psql -U postgres -h localhost -p $PGPORT -c "DROP DATABASE IF EXISTS \"`GetDb $db`\";" >/dev/null 2>&1
+    psql -U postgres -h localhost -p $PGPORT -c "CREATE DATABASE \"`GetDb $db`\";" >/dev/null 2>&1
   done
 }
 
 function Restore_Data() {
   for db in $DB ; do
-    dump=`echo $db | awk -F: '{ print $2 }'`
-    db=`echo $db | awk -F: '{ print $1 }'`
-    pg_restore -h localhost -p $PGPORT -U postgres -C -d $db $WORKDIR/db/$dump >/dev/null 2>&1
+    pg_restore -h localhost -p $PGPORT -U postgres -C -d `GetDb $db` $WORKDIR/db/`GetDump $db` >/dev/null 2>&1
   done
-  return 0
+  return $OK
 }
 
 function Connect() {
+  local db
+  local dbs
+  for d in $DB; do
+    dbs[${#dbs[@]}]=`GetDb $d`
+  done
+  if [[ ${#dbs[@]} == 1 ]]; then
+    db=dbs[0]
+  else
+    Select ${dbs[@]}
+    s=$?
+    db=${dbs[$((s-1))]}
+  fi
+  psql -U postgres -p $PGPORT -h localhost -d $db
+}
 
-  echo -en "\n${YELLOW}Connect to db? [y/n]: ${CLEAR}"
-  read -n 1 result
-  case $result in
-    y )
-      i=0
-      for db in `ls -1 $WORKDIR/db/ | tr "." " " | awk '{ print $1 }'`; do
-        $((i++))
-        echo "$i: $db"
-        dbs[$i]=$db
-      done
-      echo -en "\n${YELLOW}Select database: ${CLEAR}"
-      read -n 1 result
-      psql -U postgres -d
-      ;;
-    n )
-      Pg
-      ;;
-    * )
-      Connect
-      ;;
-  esac
+function GetDb() {
+  echo $1 | awk -F: '{ print $1 }'
+}
 
+function GetDump() {
+  echo $1 | awk -F: '{ print $2 }'
+}
+
+function GetSize() {
+  echo $1 | awk -F: '{ print $2 }'
 }

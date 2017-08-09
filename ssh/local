@@ -9,7 +9,7 @@ sudo echo
 #set -v
 cleanup() {
   echo -e "${NC}\n"
-  #killall ssh
+#  killall ssh
 }
 trap cleanup 0
 
@@ -81,6 +81,10 @@ case $1 in
       name=1s
       host=1s
       ;;
+  13|mon ) #monitoring
+      name=monitoring.dreamkas.ru
+      host=monitoring.dreamkas.ru
+      ;;
   *  )
       echo -e "\n${YL}Correct destinations:"
       echo -e "${OR}  1|hub           ${YL}for hub-prod-db"
@@ -118,5 +122,4 @@ fi
 echo -e "${OR}"
 echo -e "Connecting to $name..." | tr '[:lower:]' '[:upper:]'
 echo -e "${YL}"
-
 ssh -oStrictHostKeyChecking=no root@$host -p $port

@@ -9,5 +9,8 @@ function Unset() {
   unset MODEL
   unset DB
   unset PG_PORT
+  unset OK
+  unset WARN
+  unset ERR
 
 }

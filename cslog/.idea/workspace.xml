@@ -32,11 +32,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="selector.sh" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/selector.sh">
+      <file leaf-file-name="postgres.sh" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/postgres.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="11" column="43" lean-forward="true" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+            <state relative-caret-position="411">
+              <caret line="70" column="20" lean-forward="true" selection-start-line="70" selection-start-column="20" selection-end-line="70" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -51,6 +51,7 @@
       <find>ech</find>
       <find>echo</find>
       <find>PrintCommonsInfo</find>
+      <find>DB</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -72,9 +73,9 @@
         <option value="$PROJECT_DIR$/evaluator.sh" />
         <option value="$PROJECT_DIR$/analizer.sh" />
         <option value="$PROJECT_DIR$/exec.sh" />
-        <option value="$PROJECT_DIR$/postgres.sh" />
-        <option value="$PROJECT_DIR$/worker.sh" />
         <option value="$PROJECT_DIR$/selector.sh" />
+        <option value="$PROJECT_DIR$/worker.sh" />
+        <option value="$PROJECT_DIR$/postgres.sh" />
       </list>
     </option>
   </component>
@@ -243,12 +244,12 @@
       <workItem from="1501774605679" duration="40000" />
       <workItem from="1501774656336" duration="8505000" />
       <workItem from="1501848082649" duration="1595000" />
-      <workItem from="1501850027453" duration="5838000" />
+      <workItem from="1501850027453" duration="8531000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15978000" />
+    <option name="totallyTimeSpent" value="18671000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1779" y="24" width="1855" height="1084" extended-state="6" />
@@ -347,14 +348,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/initializer.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="36" column="4" lean-forward="true" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/evaluator.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -395,33 +388,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/postgres.sh">
+    <entry file="file://$PROJECT_DIR$/selector.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="9" lean-forward="false" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
-          <folding>
-            <marker date="1501852992165" expanded="true" signature="1716:1987" ph="{...}" />
-            <marker date="1501852992165" expanded="true" signature="1992:2013" ph="{...}" />
-            <marker date="1501852992165" expanded="true" signature="2018:2044" ph="{...}" />
-          </folding>
+        <state relative-caret-position="306">
+          <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/initializer.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/worker.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="23" column="25" lean-forward="false" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+        <state relative-caret-position="515">
+          <caret line="42" column="6" lean-forward="true" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
           <folding>
-            <marker date="1501857670643" expanded="true" signature="330:389" ph="{...}" />
-            <marker date="1501857670643" expanded="true" signature="446:487" ph="{...}" />
+            <marker date="1501859524557" expanded="true" signature="348:374" ph="{...}" />
+            <marker date="1501859524557" expanded="true" signature="431:472" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/selector.sh">
+    <entry file="file://$PROJECT_DIR$/postgres.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="43" lean-forward="true" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+        <state relative-caret-position="411">
+          <caret line="70" column="20" lean-forward="true" selection-start-line="70" selection-start-column="20" selection-end-line="70" selection-end-column="20" />
           <folding />
         </state>
       </provider>

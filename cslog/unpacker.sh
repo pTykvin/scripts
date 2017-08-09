@@ -25,15 +25,15 @@ function Unpack() {
       else
         echo "Unknown file structure. Extracted to $tmp"
         echo $tmp | xclip
-        return -1
+        return $ERR
       fi
     ;;
     * )
       echo "Unsupported file type $mime"
-      return -1
+      return $ERR
     ;;
   esac
-  return 0
+  return $OK
 
 }
 

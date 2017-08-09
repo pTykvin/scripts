@@ -17,7 +17,10 @@ function InitFile() {
     YELLOW="\e[1;33m"
     ORANGE="\e[0;31m"
     LINEWIDTH=80
-
+    OK=0
+    WARN=100
+    ERR=200
+    
     ## Vars
 
     WORKDIR=
@@ -35,4 +38,9 @@ function InitFile() {
     echo "Wrong file: $1"
     exit 1
   fi
+}
+
+function Exit() {
+  echo "Good bye"
+  exit 0
 }

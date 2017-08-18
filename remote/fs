@@ -16,6 +16,16 @@ function error {
 
 DIR=/mnt/$2
 
+if [ $1 == "umount" ]; then
+  sudo killall sshfs
+  sudo umount $DIR
+  if [ `ls -1 $DIR | wc -l` ]; then 
+    rm -rf $DIR
+  fi
+  exit 0
+fi
+
+
 sudo mkdir -p $DIR
 sudo sshfs -oallow_other -oIdentityFile=/home/pavel/.ssh/id_rsa -oreconnect -oStrictHostKeyChecking=no -oServerAliveInterval=15 root@$1:/ $DIR -p 22 -C
 echo -e "\n${YL}Remote filesystem of ${OR}$1${YL} mounted to ${OR}$DIR${NC}\n"

@@ -1,0 +1,9 @@
+#!/bin/bash
+killall ssh 2>/dev/null
+ip=$1
+for port in ${@:2};  do
+  local_port=2$port
+  ssh -oStrictHostKeyChecking=no -f -N -L $local_port:localhost:$port root@$1
+  echo "localhost:$local_port -> $ip:$port"
+done
+

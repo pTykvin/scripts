@@ -1,0 +1,2 @@
+"NetworkMode": "devbox_default"
+sudo docker run --link devbox_redis_1:redis --net devbox_default -it redis redis-cli -h redis

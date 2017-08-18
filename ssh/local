@@ -85,6 +85,10 @@ case $1 in
       name=monitoring.dreamkas.ru
       host=monitoring.dreamkas.ru
       ;;
+  14|ded )
+      name=dedicated
+      host=95.213.202.43
+      ;;
   *  )
       echo -e "\n${YL}Correct destinations:"
       echo -e "${OR}  1|hub           ${YL}for hub-prod-db"
@@ -99,6 +103,8 @@ case $1 in
       echo -e "${OR}  10|updateb      ${YL}for update-beta"
       echo -e "${OR}  11|test         ${YL}for hub-test"
       echo -e "${OR}  12|1s           ${YL}for 1s"
+      echo -e "${OR}  13|mon          ${YL}for monitoring"
+      echo -e "${OR}  14|ded          ${YL}for dedicated"
       exit 0
 ;;
 esac

@@ -1,0 +1,32 @@
+#!/bin/sh
+VM_ID="10"
+ROOT="/mnt/media/virtual/win10"
+MACBASE="00:16:3e:ff:ff"
+
+HDA="$ROOT/vm_${VM_ID}.img"
+HDB="$ROOT/temp.img"
+HDC="$ROOT/win10.iso"
+#HDC="w2k3_r2_ent_rus_x86/ru_win_srv_2003_r2_enterprise_with_sp2_vl_cd1_X13-46484.iso"
+HDD="$ROOT/virtio-win.iso"
+
+qemu-system-x86_64 \
+-enable-kvm \
+-m 4G \
+-cpu host \
+-hda "$HDA" \
+-net nic \
+-net user
+
+sudo kvm \
+-enable-kvm \
+-boot "menu=on,order=d" \
+-m 4G \
+-balloon virtio \
+-name "kvm_${VM_ID}" \
+-drive "file=$HDA,index=0,media=disk,cache=writeback" \
+-drive "file=$HDB,index=1,media=disk,cache=writeback,if=virtio" \
+-drive "file=$HDC,index=2,media=cdrom,cache=writeback,readonly" \
+-drive "file=$HDD,index=3,media=cdrom,cache=writeback,readonly" \
+-net "nic,model=virtio,macaddr=${MACBASE}:${VM_ID}" \
+-net "tap,ifname=tap${VM_ID},script=no,downscript=no" 
+# -vnc "0.0.0.0:${VM_ID}"

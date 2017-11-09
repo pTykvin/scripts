@@ -25,8 +25,20 @@ if [ $1 == "umount" ]; then
   exit 0
 fi
 
+ttl=`ping $1 -c 1 | grep ttl | awk '{ print $6 }' | sed -n '/^ttl=\(.*\).*$/s//\1/p'`
 
+if [ -d $DIR ]; then
+  sudo umount $DIR
+fi
 sudo mkdir -p $DIR
-sudo sshfs -oallow_other -oIdentityFile=/home/pavel/.ssh/id_rsa -oreconnect -oStrictHostKeyChecking=no -oServerAliveInterval=15 root@$1:/ $DIR -p 22 -C
+if [[ $ttl -le 64 ]]; then
+  sudo sshfs -oallow_other -oIdentityFile=/home/pavel/.ssh/id_rsa -oreconnect -oStrictHostKeyChecking=no -oServerAliveInterval=15 root@$1:/ $DIR -p 22 -C
+else
+  echo -en "Username: "
+  read user
+  echo -en "Password: "
+  read -s pass
+  sudo mount -o username=$user,password=$pass -t cifs //$1/Dreamkas $DIR -o rw
+fi
 echo -e "\n${YL}Remote filesystem of ${OR}$1${YL} mounted to ${OR}$DIR${NC}\n"
 echo $DIR | xclip

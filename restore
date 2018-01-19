@@ -1,0 +1,7 @@
+#!/bin/bash
+[[ ! -f start.dump ]] && echo start.dump not found here && exit
+set -e
+psql -U postgres -h localhost -c "DROP DATABASE start;"
+psql -U postgres -h localhost -c "CREATE DATABASE start;"
+pg_restore -U postgres -h localhost -d start start.dump
+psql -U postgres -h localhost -d start

@@ -1,0 +1,5 @@
+#!/bin/bash
+if [ ! -z $1 ]; then
+  psql -U postgres -h localhost -c "CREATE DATABASE $1;"
+  psql -U postgres -h localhost -c "CREATE USER $1 WITH PASSWORD '$1'; GRANT ALL PRIVILEGES ON DATABASE $1 TO $1"
+fi

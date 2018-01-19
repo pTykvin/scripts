@@ -1,0 +1,4 @@
+#!/bin/bash
+read payload
+echo $payload | xclip 
+echo $payload | xclip -selection clipboard

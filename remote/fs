@@ -1,5 +1,5 @@
 #!/bin/bash
-
+HOME=~
 YL='\033[1;33m'
 OR='\033[0;31m' 
 NC='\033[0m' # No Color
@@ -32,7 +32,7 @@ if [ -d $DIR ]; then
 fi
 sudo mkdir -p $DIR
 if [[ $ttl -le 64 ]]; then
-  sudo sshfs -oallow_other -oIdentityFile=/home/pavel/.ssh/id_rsa -oreconnect -oStrictHostKeyChecking=no -oServerAliveInterval=15 root@$1:/ $DIR -p 22 -C
+  sudo sshfs -oallow_other -oIdentityFile=$HOME/.ssh/id_rsa -oreconnect -oStrictHostKeyChecking=no -oServerAliveInterval=15 root@$1:/ $DIR -p 22 -C
 else
   echo -en "Username: "
   read user

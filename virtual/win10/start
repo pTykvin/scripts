@@ -11,7 +11,7 @@ HDD="$ROOT/virtio-win.iso"
 
 qemu-system-x86_64 \
 -enable-kvm \
--m 4G \
+-m 2G \
 -cpu host \
 -hda "$HDA" \
 -net nic \

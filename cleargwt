@@ -1,0 +1,19 @@
+#!/bin/bash
+
+sudo killall java
+echo "Kill java"
+sudo rm -rf /tmp/*
+echo "Clear tmp"
+sudo rm -rf /mnt/media/Work/projects/start-conf/conf/www/*
+echo "Clear www"
+
+function clr() {
+  for out in `find /mnt/media/Work/projects/start/SetRetail10_Start/touch/ui -name $1`; do
+    echo "Remove $out"
+    sudo rm -rf $out;
+  done
+}
+
+clr out
+clr build
+

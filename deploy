@@ -1,0 +1,118 @@
+#!/bin/bash
+ROOT="/home/happyfat/Work/projects/station"
+ANSIBLE_ROOT="$ROOT/ansible"
+BACKEND_ROOT="$ROOT/backend"
+
+set -e
+
+while [ -n "$1" ]
+do
+  case "$1" in
+     -t) without_test="def" ;;
+     -b) without_build="def" ;;
+     -a) without_ansible="def" ;;
+     -p) without_push="def" ;;
+ --help) show_help="def" ;;
+     -v) shift; version=$1 ;;
+--dirty) dirty_run="def" ;;
+     --) shift
+         break ;;
+  esac
+  shift
+done
+
+gradle_run="$BACKEND_ROOT/gradlew -c $BACKEND_ROOT/settings.gradle"
+gradle_cmd="$gradle_run"
+all_services=($(ls -1 $BACKEND_ROOT/service))
+all_environment=($(ls -1 $BACKEND_ROOT/environment))
+
+if [[ $# == 0 ]]; then
+  services="${all_services[@]} ${all_environment[@]}"
+else
+  services="$@"
+fi
+echo "Will work with:"
+echo $services
+
+function search_app {
+  local result=`[[ " ${all_services[*]}" =~ " $1" ]] && echo service`
+  if [[ -z $result ]]; then
+    local result=`[[ " ${all_environment[*]}" =~ " $1" ]] && echo environment`
+  fi
+  [[ -z $result ]] && return 1
+  echo $result
+}
+
+function join_by { 
+  local IFS="$1"
+  shift
+  echo "$*" 
+}
+
+function append_cmd {
+  [[ $1 == "-x" ]] && { local exclude="-x"; shift; }
+  local action=$1
+  shift
+  echo "Prepare $action action..."
+  for param in "$@"
+  do
+    local dir=`search_app $param`
+    [[ -z $dir  ]] && { echo "Application $param not found"; exit 1; }
+    gradle_cmd="$gradle_cmd $exclude :$dir:$param:$action"
+  done
+}
+
+function usage {
+
+  echo "USAGE: deploy [OPTIONS] [-- <SERVICES>]"
+  echo
+  echo "OPTIONS:"
+  echo "  -v          Version for update"
+  echo "  -t          Exclude test"
+  echo "  -b          Exclude build"
+  echo "  -p          Exclude dockerPush"
+  echo "  -a          Exclude ansible task"
+  echo "  --dirty     Don't execute commands"
+  echo "  --help      Show this mesage"
+  echo
+  echo "SERVICES: list of services to be deployed"
+  echo
+  echo "EXAMPLES:"
+  echo "deploy -t -- config broker gate-sc             Build and deploy config, broker and gate-sc without tests"
+  echo "deploy -b -v 1.0.1 -- document                 Deploy document service version 1.0.1 without build"
+  echo "deploy -t                                      Build and deploy all services without tests"
+  echo "deploy -t --dirty -- document broker           Dirty run deploy document and broker"
+
+}
+
+function find_version {
+  if [[ -z $version ]]; then
+    version=`$gradle_run properties -q | grep 'version:' | awk '{print $2}'`
+    version=`echo "${version/+/-}"`
+  fi
+}
+
+function execute {
+  if [ -z $dirty_run ]; then
+    eval $@ || exit 1
+  else
+    echo "WILL EXECUTE: $@"
+  fi
+}
+
+[[ ! -z $show_help  ]] && { usage; exit; }
+
+if [[ -z $without_build ]]; then
+  append_cmd build $services
+  [[ -z $without_test ]] && append_cmd test $services || append_cmd -x test $services
+  [[ -z $without_push ]] && append_cmd dockerPush $services
+  [[ $gradle_run != $gradle_cmd ]] && { echo "Gradle execution..."; execute $gradle_cmd; }
+fi
+
+if [[ -z $without_ansible ]]; then
+  find_version
+  services=`join_by , "$services"`
+  ansible_cmd="ansible-playbook -i $ANSIBLE_ROOT/inventory/development_vmware/ --limit=dev -e limit_services=$services -e default_version=$version $ANSIBLE_ROOT/update-service-version.yml"
+  echo "Ansible execution..."
+  execute $ansible_cmd
+fi

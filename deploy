@@ -8,31 +8,20 @@ set -e
 while [ -n "$1" ]
 do
   case "$1" in
-     -t) without_test="def" ;;
-     -b) without_build="def" ;;
-     -a) without_ansible="def" ;;
-     -p) without_push="def" ;;
- --help) show_help="def" ;;
-     -v) shift; version=$1 ;;
---dirty) dirty_run="def" ;;
-     --) shift
-         break ;;
+       -t) without_test="def" ;;
+       -b) without_build="def" ;;
+       -a) without_ansible="def" ;;
+       -p) without_push="def" ;;
+   --help) show_help="def" ;;
+       -v) shift; version=$1 ;;
+  --dirty) dirty_run="def" ;;
+--exclude) shift; excluded=$1 ;;
+       --) shift
+           break ;;
+        *) echo "Unsupported option $1"; show_help="def" ;;
   esac
   shift
 done
-
-gradle_run="$BACKEND_ROOT/gradlew -c $BACKEND_ROOT/settings.gradle"
-gradle_cmd="$gradle_run"
-all_services=($(ls -1 $BACKEND_ROOT/service))
-all_environment=($(ls -1 $BACKEND_ROOT/environment))
-
-if [[ $# == 0 ]]; then
-  services="${all_services[@]} ${all_environment[@]}"
-else
-  services="$@"
-fi
-echo "Will work with:"
-echo $services
 
 function search_app {
   local result=`[[ " ${all_services[*]}" =~ " $1" ]] && echo service`
@@ -41,12 +30,6 @@ function search_app {
   fi
   [[ -z $result ]] && return 1
   echo $result
-}
-
-function join_by { 
-  local IFS="$1"
-  shift
-  echo "$*" 
 }
 
 function append_cmd {
@@ -73,6 +56,7 @@ function usage {
   echo "  -p          Exclude dockerPush"
   echo "  -a          Exclude ansible task"
   echo "  --dirty     Don't execute commands"
+  echo "  --exlude    Excluded services"
   echo "  --help      Show this mesage"
   echo
   echo "SERVICES: list of services to be deployed"
@@ -82,25 +66,52 @@ function usage {
   echo "deploy -b -v 1.0.1 -- document                 Deploy document service version 1.0.1 without build"
   echo "deploy -t                                      Build and deploy all services without tests"
   echo "deploy -t --dirty -- document broker           Dirty run deploy document and broker"
+  echo "deploy --exclude storage,gate-sc               Exclude storage and gate-sc from deploy"
 
 }
 
 function find_version {
+  printf "Fetching vresion..."
   if [[ -z $version ]]; then
     version=`$gradle_run properties -q | grep 'version:' | awk '{print $2}'`
     version=`echo "${version/+/-}"`
   fi
+  echo $version
 }
 
 function execute {
   if [ -z $dirty_run ]; then
-    eval $@ || exit 1
+    eval $@ || { echo "Terminating..."; exit 1; }
   else
     echo "WILL EXECUTE: $@"
   fi
 }
 
+function exclude_services {
+  arr=($(echo $1 | tr ',' "\n"))
+  for item in "${arr[@]}"
+  do
+    services=`echo ${services[@]/$item}`
+  done
+}
+
 [[ ! -z $show_help  ]] && { usage; exit; }
+
+gradle_run="$BACKEND_ROOT/gradlew -c $BACKEND_ROOT/settings.gradle"
+gradle_cmd="$gradle_run"
+all_services=($(ls -1 $BACKEND_ROOT/service))
+all_environment=($(ls -1 $BACKEND_ROOT/environment))
+
+if [[ $# == 0 ]]; then
+  services="${all_services[@]} ${all_environment[@]}"
+else
+  services="$@"
+fi
+
+exclude_services $excluded
+
+echo "Will work with:"
+echo $services
 
 if [[ -z $without_build ]]; then
   append_cmd build $services
@@ -111,8 +122,8 @@ fi
 
 if [[ -z $without_ansible ]]; then
   find_version
-  services=`join_by , "$services"`
-  ansible_cmd="ansible-playbook -i $ANSIBLE_ROOT/inventory/development_vmware/ --limit=dev -e limit_services=$services -e default_version=$version $ANSIBLE_ROOT/update-service-version.yml"
+  joined=`echo "${services[@]}" | tr ' ' ','`
+  ansible_cmd="ansible-playbook -i $ANSIBLE_ROOT/inventory/development_vmware/ --limit=dev -e limit_services=$joined -e default_version=$version $ANSIBLE_ROOT/update-service-version.yml"
   echo "Ansible execution..."
   execute $ansible_cmd
 fi

@@ -25,11 +25,11 @@ done
 
 function search_app {
   local result=`[[ " ${all_services[*]}" =~ " $1" ]] && echo service`
-  if [[ -z $result ]]; then
+  if [[ -z ${result} ]]; then
     local result=`[[ " ${all_environment[*]}" =~ " $1" ]] && echo environment`
   fi
-  [[ -z $result ]] && return 1
-  echo $result
+  [[ -z ${result} ]] && return 1
+  echo ${result}
 }
 
 function append_cmd {
@@ -39,8 +39,8 @@ function append_cmd {
   echo "Prepare $action action..."
   for param in "$@"
   do
-    local dir=`search_app $param`
-    [[ -z $dir  ]] && { echo "Application $param not found"; exit 1; }
+    local dir=`search_app ${param}`
+    [[ -z ${dir}  ]] && { echo "Application $param not found"; exit 1; }
     gradle_cmd="$gradle_cmd $exclude :$dir:$param:$action"
   done
 }
@@ -72,15 +72,15 @@ function usage {
 
 function find_version {
   printf "Fetching vresion..."
-  if [[ -z $version ]]; then
-    version=`$gradle_run properties -q | grep 'version:' | awk '{print $2}'`
+  if [[ -z ${version} ]]; then
+    version=`${gradle_run} properties -q | grep 'version:' | awk '{print $2}'`
     version=`echo "${version/+/-}"`
   fi
   echo $version
 }
 
 function execute {
-  if [ -z $dirty_run ]; then
+  if [ -z ${dirty_run} ]; then
     eval $@ || { echo "Terminating..."; exit 1; }
   else
     echo "WILL EXECUTE: $@"
@@ -95,12 +95,12 @@ function exclude_services {
   done
 }
 
-[[ ! -z $show_help  ]] && { usage; exit; }
+[[ ! -z ${show_help}  ]] && { usage; exit; }
 
 gradle_run="$BACKEND_ROOT/gradlew -c $BACKEND_ROOT/settings.gradle"
 gradle_cmd="$gradle_run"
-all_services=($(ls -1 $BACKEND_ROOT/service))
-all_environment=($(ls -1 $BACKEND_ROOT/environment))
+all_services=($(ls -1 ${BACKEND_ROOT}/service))
+all_environment=($(ls -1 ${BACKEND_ROOT}/environment))
 
 if [[ $# == 0 ]]; then
   services="${all_services[@]} ${all_environment[@]}"
@@ -108,22 +108,22 @@ else
   services="$@"
 fi
 
-exclude_services $excluded
+exclude_services ${excluded}
 
 echo "Will work with:"
-echo $services
+echo ${services}
 
-if [[ -z $without_build ]]; then
-  append_cmd build $services
-  [[ -z $without_test ]] && append_cmd test $services || append_cmd -x test $services
-  [[ -z $without_push ]] && append_cmd dockerPush $services
-  [[ $gradle_run != $gradle_cmd ]] && { echo "Gradle execution..."; execute $gradle_cmd; }
+if [[ -z ${without_build} ]]; then
+  append_cmd build ${services}
+  [[ -z ${without_test} ]] && append_cmd test ${services} || append_cmd -x test ${services}
+  [[ -z ${without_push} ]] && append_cmd dockerPush ${services}
+  [[ ${gradle_run} != ${gradle_cmd} ]] && { echo "Gradle execution..."; execute ${gradle_cmd}; }
 fi
 
-if [[ -z $without_ansible ]]; then
+if [[ -z ${without_ansible} ]]; then
   find_version
   joined=`echo "${services[@]}" | tr ' ' ','`
   ansible_cmd="ansible-playbook -i $ANSIBLE_ROOT/inventory/development_vmware/ --limit=dev -e limit_services=$joined -e default_version=$version $ANSIBLE_ROOT/update-service-version.yml"
   echo "Ansible execution..."
-  execute $ansible_cmd
+  execute ${ansible_cmd}
 fi

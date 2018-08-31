@@ -5,6 +5,33 @@ BACKEND_ROOT="$ROOT/backend"
 
 set -e
 
+function usage {
+cat <<EOF
+
+USAGE: deploy [OPTIONS] [-- <SERVICES>]
+
+OPTIONS:
+  -v          Version for update
+  -t          Exclude test
+  -b          Exclude build
+  -p          Exclude dockerPush
+  -a          Exclude ansible task
+  --dirty     Don't execute commands
+  --exlude    Excluded services
+  --help      Show this mesage
+
+SERVICES: list of services to be deployed
+
+EXAMPLES:
+  deploy -t -- config broker gate-sc             Build and deploy config, broker and gate-sc without tests
+  deploy -b -v 1.0.1 -- document                 Deploy document service version 1.0.1 without build
+  deploy -t                                      Build and deploy all services without tests
+  deploy -t --dirty -- document broker           Dirty run deploy document and broker
+  deploy --exclude storage,gate-sc               Exclude storage and gate-sc from deploy
+
+EOF
+}
+
 while [ -n "$1" ]
 do
   case "$1" in
@@ -45,31 +72,6 @@ function append_cmd {
   done
 }
 
-function usage {
-
-  echo "USAGE: deploy [OPTIONS] [-- <SERVICES>]"
-  echo
-  echo "OPTIONS:"
-  echo "  -v          Version for update"
-  echo "  -t          Exclude test"
-  echo "  -b          Exclude build"
-  echo "  -p          Exclude dockerPush"
-  echo "  -a          Exclude ansible task"
-  echo "  --dirty     Don't execute commands"
-  echo "  --exlude    Excluded services"
-  echo "  --help      Show this mesage"
-  echo
-  echo "SERVICES: list of services to be deployed"
-  echo
-  echo "EXAMPLES:"
-  echo "deploy -t -- config broker gate-sc             Build and deploy config, broker and gate-sc without tests"
-  echo "deploy -b -v 1.0.1 -- document                 Deploy document service version 1.0.1 without build"
-  echo "deploy -t                                      Build and deploy all services without tests"
-  echo "deploy -t --dirty -- document broker           Dirty run deploy document and broker"
-  echo "deploy --exclude storage,gate-sc               Exclude storage and gate-sc from deploy"
-
-}
-
 function find_version {
   printf "Fetching vresion..."
   if [[ -z ${version} ]]; then
@@ -81,7 +83,7 @@ function find_version {
 
 function execute {
   if [ -z ${dirty_run} ]; then
-    eval $@ || { echo "Terminating..."; exit 1; }
+    time eval $@ || { echo "Terminating..."; exit 1; }
   else
     echo "WILL EXECUTE: $@"
   fi
@@ -123,7 +125,9 @@ fi
 if [[ -z ${without_ansible} ]]; then
   find_version
   joined=`echo "${services[@]}" | tr ' ' ','`
-  ansible_cmd="ansible-playbook -i $ANSIBLE_ROOT/inventory/development_vmware/ --limit=dev -e limit_services=$joined -e default_version=$version $ANSIBLE_ROOT/update-service-version.yml"
+  ansible_cmd="ansible-playbook -i $ANSIBLE_ROOT/inventory/development/ --limit=dev -e limit_services=$joined -e default_version=$version -e skip_confirmation=yes $ANSIBLE_ROOT/update-service-version.yml"
   echo "Ansible execution..."
   execute ${ansible_cmd}
 fi
+
+echo "Finished in `date`"

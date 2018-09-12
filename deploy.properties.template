@@ -1,0 +1,3 @@
+BACKEND_ROOT=/home/happyfat/Work/projects/station/backend
+ANSIBLE_ROOT=/home/happyfat/Work/projects/station/ansible
+VAULT_PASSWORD_FILE=/home/happyfat/Work/projects/station/vault_password

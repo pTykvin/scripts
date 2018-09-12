@@ -1,8 +1,4 @@
 #!/bin/bash
-ROOT="/home/happyfat/Work/projects/station"
-ANSIBLE_ROOT="$ROOT/ansible"
-BACKEND_ROOT="$ROOT/backend"
-VAULT_PASSWORD_FILE="$ROOT/vault_password"
 
 set -e
 
@@ -33,23 +29,20 @@ EXAMPLES:
 EOF
 }
 
-while [ -n "$1" ]
-do
-  case "$1" in
-       -t) without_test="def" ;;
-       -b) without_build="def" ;;
-       -a) without_ansible="def" ;;
-       -p) without_push="def" ;;
-   --help) show_help="def" ;;
-       -v) shift; version=$1 ;;
-  --dirty) dirty_run="def" ;;
---exclude) shift; excluded=$1 ;;
-       --) shift
-           break ;;
-        *) echo "Unsupported option $1"; show_help="def" ;;
-  esac
-  shift
-done
+function load_configuration {
+  local config_file=$(dirname `realpath $1`)/deploy.properties
+  echo "Loading configuration from $config_file..."
+  if [[ -f $config_file ]]; then
+    source $config_file
+    echo -en "Properties loaded:\n`cat $config_file`\n"
+  else
+    echo "Config file don't found. Define customize properties in deploy.properties"; exit
+  fi
+  [[ ! -f $VAULT_PASSWORD_FILE ]] && { echo "Vault file don't found in $VAULT_PASSWORD_FILE. Define property VAULT_PASSWORD_FILE in deploy.properties"; exit; }
+  [[ ! -d $ANSIBLE_ROOT/inventory ]] && { echo "Ansible root don't found in $ANSIBLE_ROOT. Define property ANSIBLE_ROOT in deploy.properties"; exit; }
+  [[ ! -f $BACKEND_ROOT/build.gradle ]] && { echo "Backend root don't found in $BACKEND_ROOT. Define property BACKEND_ROOT in deploy.properties" ; exit; }
+  echo
+}
 
 function search_app {
   local result=`[[ " ${all_services[*]}" =~ " $1" ]] && echo service`
@@ -97,6 +90,27 @@ function exclude_services {
     services=`echo ${services[@]/$item}`
   done
 }
+
+load_configuration $0
+
+while [ -n "$1" ]
+do
+  case "$1" in
+       -t) without_test="def" ;;
+       -b) without_build="def" ;;
+       -a) without_ansible="def" ;;
+       -p) without_push="def" ;;
+   --help) show_help="def" ;;
+       -v) shift; version=$1 ;;
+  --dirty) dirty_run="def" ;;
+--exclude) shift; excluded=$1 ;;
+       --) shift
+           break ;;
+        *) echo "Unsupported option $1"; show_help="def" ;;
+  esac
+  shift
+done
+
 
 [[ ! -z ${show_help}  ]] && { usage; exit; }
 

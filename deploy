@@ -2,6 +2,7 @@
 ROOT="/home/happyfat/Work/projects/station"
 ANSIBLE_ROOT="$ROOT/ansible"
 BACKEND_ROOT="$ROOT/backend"
+VAULT_PASSWORD_FILE="$ROOT/vault_password"
 
 set -e
 
@@ -125,7 +126,7 @@ fi
 if [[ -z ${without_ansible} ]]; then
   find_version
   joined=`echo "${services[@]}" | tr ' ' ','`
-  ansible_cmd="ansible-playbook -i $ANSIBLE_ROOT/inventory/development/ --limit=dev -e limit_services=$joined -e default_version=$version -e skip_confirmation=yes $ANSIBLE_ROOT/update-service-version.yml"
+  ansible_cmd="ansible-playbook --vault-password-file ${VAULT_PASSWORD_FILE} -i $ANSIBLE_ROOT/inventory/development/ --limit=dev -e limit_services=$joined -e default_version=$version -e skip_confirmation=yes $ANSIBLE_ROOT/update-service-version.yml"
   echo "Ansible execution..."
   execute ${ansible_cmd}
 fi

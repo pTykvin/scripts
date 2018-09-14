@@ -67,7 +67,7 @@ function append_cmd {
 }
 
 function find_version {
-  printf "Fetching vresion..."
+  printf "Fetching version..."
   if [[ -z ${version} ]]; then
     version=`${gradle_run} properties -q | grep 'version:' | awk '{print $2}'`
     version=`echo "${version/+/-}"`

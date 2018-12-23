@@ -1,0 +1,2 @@
+#!/bin/bash
+git branch | grep -vE "\*|develop|master" | xargs git branch -d -f

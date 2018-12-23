@@ -1,0 +1,6 @@
+#!/bin/bash
+ssh root@92.53.64.141 "service cryptomat stop" 
+killall ssh
+ssh -R 18080:localhost:8080 root@92.53.64.141
+ssh root@92.53.64.141 "service cryptomat start"
+killall ssh

@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+mv $1 /home/happyfat/Work/arch-settings/happyfat-config/$1
+ln -s /home/happyfat/Work/arch-settings/happyfat-config/$1 $1
+ls -la $1
